@@ -24,7 +24,7 @@ export default class RechargePanel extends cc.Component {
     update() {
         let value = parseInt(this.edtValue.string);
         if (value) {
-            if (value > DataMgr.totalReward) {
+            if (value > DataMgr.totalReward * 10 && value > 0.1) {
                 this.lblNeedMoney.node.color = cc.Color.RED;
             } else {
                 this.lblNeedMoney.node.color = cc.Color.WHITE;
@@ -34,8 +34,8 @@ export default class RechargePanel extends cc.Component {
     }
     onConfirmClick() {
         let value = parseInt(this.edtValue.string);
-        if (value > DataMgr.totalReward) {
-            DialogPanel.PopupWith2Buttons('', '充值金额超过了宝藏总额，充值很有可能失败。\n如果失败，货币回退回您的钱包。',
+        if (value > DataMgr.totalReward * 10 && value > 0.1) {
+            DialogPanel.PopupWith2Buttons('', '充值金额超过了宝藏总额的10倍，充值很有可能失败。\n如果失败，货币回退回您的钱包。',
                 '强行充值', this.recharge, '取消', null);
         }
         else {

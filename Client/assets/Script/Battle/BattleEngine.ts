@@ -120,10 +120,13 @@ export class BattleEngine extends cc.Component {
         this.pt += newPt;
         ToastPanel.Toast(`+ ${gainExp.toFixed()} EXP`);
 
-        this.bounty += enemyData.bounty;
+        if (enemyData.bounty > 0) {
+            this.bounty += enemyData.bounty;
+            ToastPanel.Toast(`获得赏金 ${enemyData.bounty.toPrecision(3)} NAS`);
+        }
     }
     onMeDie() {
-        console.log('onMeDie【】【】【】');
+        console.log('【onMeDie】');
 
         setTimeout(() => {
             let resultData = DataMgr.resultData;

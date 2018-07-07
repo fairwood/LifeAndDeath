@@ -25,6 +25,8 @@ export default class ResultUI extends BaseUI {
     @property(cc.Label)
     lblNicknameWin: cc.Label = null;
     @property(cc.Label)
+    lblReward: cc.Label = null;
+    @property(cc.Label)
     lblNicknameLose: cc.Label = null;
     @property(cc.Label)
     lblBounty: cc.Label = null;
@@ -51,6 +53,7 @@ export default class ResultUI extends BaseUI {
             this.grpWin.active = true;
             this.grpLose.active = false;
             this.lblNicknameWin.string = resultData.mainCharacterData.nickname;
+            this.lblReward.string = DataMgr.totalReward.toPrecision(4)+' NAS';
         } else {
             this.grpWin.active = false;
             this.grpLose.active = true;
