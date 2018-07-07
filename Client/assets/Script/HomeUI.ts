@@ -6,6 +6,8 @@ import { DataMgr, EnemyData } from "./DataMgr";
 import BattleUI from "./BattleUI";
 import { CharacterActor } from "./CharacterActor";
 import DialogPanel from "./DialogPanel";
+import BlockchainMgr from "./BlockchainMgr";
+import RechargePanel from "./UI/RechargePanel";
 
 const { ccclass, property } = cc._decorator;
 
@@ -106,10 +108,16 @@ export default class HomeUI extends BaseUI {
             RGPt: this.ptArray[3],
             DGPt: this.ptArray[4],
             nonce: this.nonce,
+            nickname: this.edtNickname.string,
+            address: BlockchainMgr.WalletAddress
         };
         DataMgr.mainCharacter = mainCharacter;
 
         MainCtrl.Instance.startBattle();
+    }
+
+    onRechargeClick() {
+        RechargePanel.Instance.node.active = true;
     }
 
     onCheatClick() {

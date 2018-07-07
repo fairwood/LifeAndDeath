@@ -12,6 +12,11 @@ export class Chest extends cc.Component {
     lblTotalReward: cc.Label = null;
     update() {
         let mainCharacter = MainCtrl.Instance.engine.mainCharacter;
-        this.hint.active = (mainCharacter && mainCharacter.node.position.sub(this.node.position).mag() < 50);
+        let isNearby = mainCharacter && mainCharacter.node.position.sub(this.node.position).mag() < 50;
+        this.hint.active = isNearby;
+
+        if (isNearby && MainCtrl.Instance.engine.leftEnemyCnt <= 0){
+            MainCtrl.Instance.engine.win();
+        }
     }
 }

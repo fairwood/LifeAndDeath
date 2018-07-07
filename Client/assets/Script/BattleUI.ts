@@ -19,6 +19,7 @@ export default class BattleUI extends BaseUI {
 
         let self = this;
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, function (event) {
+            console.log('key down', event.keyCode, cc.KEY.space);
             switch (event.keyCode) {
                 case cc.KEY.space:
                     self.attacking = true;

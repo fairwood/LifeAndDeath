@@ -14,11 +14,27 @@
     [
       false,
       false,
+      false,
+      null,
       true
     ],
     [
       false,
+      false,
+      false,
+      true
+    ],
+    [
+      false,
+      false,
       true,
+      false
+    ],
+    [
+      false,
+      true,
+      false,
+      false,
       false
     ]
   ],
@@ -45,7 +61,9 @@
   "group-list": [
     "default",
     "me",
-    "enemy"
+    "enemy",
+    "myProj",
+    "enemyProj"
   ],
   "simulator-orientation": false,
   "simulator-resolution": {

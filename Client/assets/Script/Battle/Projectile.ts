@@ -1,5 +1,6 @@
 import { BattleEngine } from "./BattleEngine";
 import { Character } from "./Character";
+import MainCtrl from "../MainCtrl";
 
 const { ccclass, property } = cc._decorator;
 
@@ -15,6 +16,13 @@ export class Projectile extends cc.Component {
 
     AD = 0;
 
+    @property(cc.Sprite)
+    spr: cc.Sprite = null;
+    @property(cc.SpriteFrame)
+    spfMy: cc.SpriteFrame = null;
+    @property(cc.SpriteFrame)
+    spfEnemy: cc.SpriteFrame = null;
+
     public get pos(): cc.Vec2 {
         return this.node.position.mul(BattleEngine.pxToMeter);
     }
@@ -24,22 +32,25 @@ export class Projectile extends cc.Component {
     }
 
     setData(isEnemy, AD, lifespan) {
-        this.node.groupIndex = isEnemy ? 2 : 1;
+        this.node.groupIndex = isEnemy ? 4 : 3;
         this.cldr.apply();
         this.AD = AD;
         this.lifespan = lifespan;
+        this.spr.spriteFrame = isEnemy ? this.spfEnemy : this.spfMy;
     }
 
     update(dt) {
         this.lifespan -= dt;
         if (this.lifespan <= 0) this.node.destroy();
     }
-    onBeginContact(contact, selfCollider, otherCollider) {
+    onBeginContact(contact: cc.PhysicsContact, selfCollider, otherCollider) {
         let ch = otherCollider.node.getComponent(Character);
         if (ch) {
             this.takeEffectOn(ch);
         }
         this.node.destroy();
+        //特效
+        MainCtrl.Instance.engine.playImpactEffect(MainCtrl.Instance.engine.effectContainer.convertToNodeSpace(contact.getWorldManifold().points[0]));
     }
 
     takeEffectOn(target: Character) {

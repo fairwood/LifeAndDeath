@@ -4,6 +4,8 @@ import MathUtil from "../Utils/MathUtil";
 import BattleUI from "../BattleUI";
 import ToastPanel from "../UI/ToastPanel";
 import { EnemyAI } from "./EnemyAI";
+import CvsMain from "../CvsMain";
+import ResultUI from "../ResultUI";
 
 const { ccclass, property } = cc._decorator;
 
@@ -13,6 +15,7 @@ export class BattleEngine extends cc.Component {
     onLoad() {
         this.characterTemplate.active = false;
         this.projectileTemplate.active = false;
+        this.effImpactTemplate.active = false;
 
         //开启物理引擎
         cc.director.getPhysicsManager().enabled = true;
@@ -25,6 +28,8 @@ export class BattleEngine extends cc.Component {
     projectileTemplate: cc.Node = null;
     @property(cc.Node)
     projectileContainer: cc.Node = null;
+    @property(cc.Node)
+    effImpactTemplate: cc.Node = null;
     @property(cc.Node)
     effectContainer: cc.Node = null;
 
@@ -42,8 +47,9 @@ export class BattleEngine extends cc.Component {
     mainCharacter: Character;
 
     exp = 0;
-
     pt = 0;
+
+    bounty = 0;
 
     leftEnemyCnt: number;
 
@@ -53,7 +59,7 @@ export class BattleEngine extends cc.Component {
 
     startBattle(mainCharacter) {
         this.clear();
-        //TODO 创建主角
+        //创建主角
         let chNode = cc.instantiate(this.characterTemplate);
         chNode.parent = this.characterContainer;
         this.mainCharacter = chNode.getComponent(Character);
@@ -61,7 +67,7 @@ export class BattleEngine extends cc.Component {
         chNode.active = true;
 
         let mostLeftDown = 0;
-        //TODO 创建敌人
+        //创建敌人
         this.leftEnemyCnt = 0;
         for (let address in DataMgr.enemysData) {
             let enemyData = DataMgr.enemysData[address];
@@ -83,9 +89,12 @@ export class BattleEngine extends cc.Component {
         let x = -mostLeftDown / 2 - 6;
         this.mainCharacter.node.position = new cc.Vec2(x, x).mul(this.meterToPx);
 
-        //TODO 创建宝箱
+        //显示宝箱
         this.chest.active = true;
 
+        this.exp = 0;
+        this.pt = 0;
+        this.bounty = 0;
     }
 
     update(dt) {
@@ -110,9 +119,29 @@ export class BattleEngine extends cc.Component {
         this.exp -= newPt * 100;
         this.pt += newPt;
         ToastPanel.Toast(`+ ${gainExp.toFixed()} EXP`);
+
+        this.bounty += enemyData.bounty;
     }
     onMeDie() {
         console.log('onMeDie【】【】【】');
+
+        setTimeout(() => {
+            let resultData = DataMgr.resultData;
+            resultData.isWin = false;
+            resultData.mainCharacterData = this.mainCharacter.data;
+            resultData.bounty = this.bounty;
+            this.clear();
+            CvsMain.EnterUI(ResultUI);
+        }, 1000);
+    }
+
+    win() {
+        let resultData = DataMgr.resultData;
+        resultData.isWin = true;
+        resultData.mainCharacterData = this.mainCharacter.data;
+        resultData.bounty = 0;
+        this.clear();
+        CvsMain.EnterUI(ResultUI);
     }
 
     upgrade(prop) {
@@ -139,6 +168,16 @@ export class BattleEngine extends cc.Component {
                 break;
         }
         this.mainCharacter.didUpgrade();
+    }
+
+    playImpactEffect(pos: cc.Vec2) {
+        console.log("playImpEff", pos, this.mainCharacter.node.position);
+        let effNode = cc.instantiate(this.effImpactTemplate);
+        effNode.parent = this.effectContainer;
+        effNode.position = pos;
+        effNode.active = true;
+
+        setTimeout(() => { effNode.destroy(); }, 70);
     }
 
     clear() {

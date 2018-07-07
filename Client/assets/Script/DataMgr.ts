@@ -9,6 +9,13 @@ export class DataMgr {
 
     static mainCharacter: any;
     static enemysData = {};
+    static totalReward = 0;
+
+    static resultData = {
+        isWin: false,
+        mainCharacterData: null,
+        bounty: 0,
+    };
 
     private static inited = false;
     static init() {
@@ -23,7 +30,7 @@ export class DataMgr {
 
     static MS = 4;
     static getProjectileSpeed(isEnemy) {
-        return isEnemy ? 6 : 12;
+        return isEnemy ? 3 : 12;
     }
     static getExtraPt(money: number) {
         return money / 0.01;
@@ -49,10 +56,13 @@ export class DataMgr {
         let hair = Math.floor(this.APHash1('hair' + nonce.toFixed()) * hairCount);
         let faceScale = 1 - this.APHash1('face' + nonce.toFixed()) * 0.25;
         let bodyScale = 0.8 + this.APHash1('body' + nonce.toFixed()) * 0.25;
+        const wingCount = 4;
+        let wing = Math.floor(this.APHash1('wing' + nonce.toFixed()) * wingCount);
         return {
             hair: hair,
             faceScale: faceScale,
-            bodyScale: bodyScale
+            bodyScale: bodyScale,
+            wing: wing
         };
     }
     static getPosition(index: number): cc.Vec2 {
