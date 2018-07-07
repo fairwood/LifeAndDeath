@@ -1,10 +1,10 @@
 import CvsMain from "./CvsMain";
 import HomeUI from "./HomeUI";
-import { DataMgr, UserData, CargoData, MineInfo, IslandData, TechData } from "./DataMgr";
-import WorldUI from "./WorldUI";
-import IntroUI from "./UI/IntroUI";
-import Island from "./World/Island";
+import { DataMgr, UserData } from "./DataMgr";
 import ToastPanel from "./UI/ToastPanel";
+import IntroUI from "./UI/IntroUI";
+import { BattleEngine } from "./Battle/BattleEngine";
+import BattleUI from "./BattleUI";
 
 const { ccclass, property } = cc._decorator;
 
@@ -13,18 +13,11 @@ export default class MainCtrl extends cc.Component {
     static Instance: MainCtrl;
     onLoad() {
         MainCtrl.Instance = this;
-        CvsMain.Instance.uiContainer.getChildByName('WorldUI').active = true;
-
         //加载数据
-        cc.loader.loadRes('Building', function (err, txt) {
-            console.log('Building loaded', txt);
-            DataMgr.BuildingConfig = txt;
-        }.bind(this));
-        cc.loader.loadRes('Cargo', function (err, txt) {
-            console.log('Cargo loaded', txt);
-            DataMgr.CargoConfig = txt;
-        }.bind(this));
         DataMgr.init();
+
+        //读取缓存
+        DataMgr.extraPt = DataMgr.readExtraPt();
     }
 
     static Ticks = 0;
@@ -44,5 +37,53 @@ export default class MainCtrl extends cc.Component {
 
     update(dt: number) {
         MainCtrl.Ticks++;
+    }
+
+    @property(BattleEngine)
+    engine: BattleEngine = null;
+
+    startBattle() {
+        CvsMain.EnterUI(BattleUI);
+        this.engine.startBattle(DataMgr.mainCharacter);
+    }
+
+    onGetMyData(resp) {
+        console.log('onGetMyData', resp);
+        let user: UserData = JSON.parse(resp.result);
+        if (user) {
+            DataMgr.myData = user;
+            let cachedData: UserData = null;
+            try {
+                cachedData = JSON.parse(cc.sys.localStorage.getItem('user0'));
+                console.log('finish read data', cachedData);
+            } catch (error) {
+                console.error(error);
+            }
+            if (cachedData) {
+                //已有缓存
+                if (cachedData.rechargeTimestamp < user.rechargeTimestamp) {
+                    //有新充值
+                    DataMgr.extraPt += DataMgr.getExtraPt(user.newRecharge);
+                    DataMgr.writeExtraPt(DataMgr.extraPt);
+                    cachedData.rechargeTimestamp = user.rechargeTimestamp;
+
+                    try {
+                        cc.sys.localStorage.setItem('user0', JSON.stringify(cachedData));
+                        console.log('finish write data', cachedData);
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            } else {
+                //新客户端
+                cachedData = user;
+                try {
+                    cc.sys.localStorage.setItem('user0', JSON.stringify(cachedData));
+                    console.log('finish write data', cachedData);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        }
     }
 }

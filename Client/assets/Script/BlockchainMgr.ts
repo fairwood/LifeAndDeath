@@ -15,7 +15,7 @@ declare var Neb: any;
 declare var NebPay: any;
 declare var Account: any;
 declare var HttpRequest: any;
-export const ContractAddress = 'n1fALBF8Z4zzHaTkiLC7XCs97DoFobTeXJV';//'n1wJnaszNyRzV8EFmA7UMnkXSC4Cugb8Zp8'; //
+export const ContractAddress = '';//'n1wJnaszNyRzV8EFmA7UMnkXSC4Cugb8Zp8'; //
 export const EncKey = 37234;
 
 @ccclass
@@ -44,7 +44,7 @@ export default class BlockchainMgr extends cc.Component {
     }
 
     //不断刷新当前钱包地址
-    update(dt: number) {
+    update1(dt: number) {
         try {
             Neb; NebPay;
         } catch (error) {
@@ -157,26 +157,7 @@ export default class BlockchainMgr extends cc.Component {
             if (BlockchainMgr.WalletAddress != address) {
                 console.log('Change wallet address:', address);
                 BlockchainMgr.WalletAddress = address;
-                HomeUI.Instance.edtBlockchainAddress.string = BlockchainMgr.WalletAddress ? BlockchainMgr.WalletAddress : '';
-                this.fetchAllDataCountdown = 0;
-                try {
-                    if (DataMgr.myData && DataMgr.myData.address != address &&
-                        (WorldUI.Instance.node.active || ArkUI.Instance.node.active)) {
-                        CvsMain.EnterUI(HomeUI);
-                    }
-                } catch (error) {
-                    console.error(error);
-                }
             }
-        }
-    }
-
-    onGetMyData(resp) {
-        console.log('onGetMyData', resp);
-        let user = JSON.parse(resp.result);
-        if (user) {
-            DataMgr.myData = user;
-            user.ticks = MainCtrl.Ticks;
         }
     }
 
@@ -184,24 +165,10 @@ export default class BlockchainMgr extends cc.Component {
         console.log('onGetAllMapData', resp);
         let allData = JSON.parse(resp.result).result_data;
         let allUserData = allData.users;
-        let allIslandData = allData.islands;
 
-        DataMgr.othersData = {};
-        allUserData.forEach(userJson => {
-            if (userJson.address == BlockchainMgr.WalletAddress) {
-            } else {
-                DataMgr.othersData[userJson.address] = userJson;
-            }
-        });
-        allIslandData.forEach(islandJson => {
-            let localData: IslandData = DataMgr.allIslandData[islandJson.id];
-            if (localData) {
-                for (let key in islandJson) {
-                    localData[key] = islandJson[key];
-                }
-            } else {
-                console.error('从区块链获取到未知id的island:', islandJson);
-            }
+        DataMgr.enemysData = {};
+        allUserData.forEach(character => {
+            DataMgr.enemysData[character.address] = character;
         });
     }
 

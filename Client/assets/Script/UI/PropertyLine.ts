@@ -18,13 +18,10 @@ export class PropertyLine extends cc.Component {
 
     start() {
         this.lblPropertyName.string = this.propertyName;
-        this.prg.progress = 0;
-        this.lblPt.string = '0 pt';
-        this.lblValue.string = '0 ' + this.unit;
     }
 
     setAndRefresh(pt: number, value: number) {
-        this.prg.progress = pt / 30;
+        this.prg.progress = pt / 20;
         this.lblPt.string = pt + ' pt';
         this.lblValue.string = value + ' ' + this.unit;
     }
