@@ -101,6 +101,7 @@ export class BattleEngine extends cc.Component {
         if (this.mainCharacter) {
             // this.node.position = MathUtil.lerpVec2(this.node.position, this.mainCharacter.node.position.mul(-1), dt);
             this.camera.position = MathUtil.lerpVec2(this.camera.position, this.mainCharacter.node.position, dt);
+            // this.camera.position = this.mainCharacter.node.position;
 
             let moveDisplacement = BattleUI.Instance.joystick.displacement;
             this.mainCharacter.moveDisplacement = moveDisplacement;

@@ -52,9 +52,7 @@
     "MotionStreak",
     "DragonBones",
     "StudioComponent",
-    "RenderTexture",
-    "Chipmunk",
-    "Camera"
+    "Chipmunk"
   ],
   "fit-height": true,
   "fit-width": false,
@@ -71,6 +69,5 @@
     "width": 960
   },
   "use-customize-simulator": false,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }
