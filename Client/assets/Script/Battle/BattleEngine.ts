@@ -86,7 +86,7 @@ export class BattleEngine extends cc.Component {
             if (leftdown > mostLeftDown) mostLeftDown = leftdown;
         }
 
-        let x = -mostLeftDown / 2 - 6;
+        let x = -mostLeftDown / 2 - 4.5;
         this.mainCharacter.node.position = new cc.Vec2(x, x).mul(this.meterToPx);
 
         //显示宝箱
@@ -174,7 +174,6 @@ export class BattleEngine extends cc.Component {
     }
 
     playImpactEffect(pos: cc.Vec2) {
-        console.log("playImpEff", pos, this.mainCharacter.node.position);
         let effNode = cc.instantiate(this.effImpactTemplate);
         effNode.parent = this.effectContainer;
         effNode.position = pos;
@@ -191,9 +190,9 @@ export class BattleEngine extends cc.Component {
         this.chest.active = false;
     }
 
-    readonly pxToMeter = 1 / 60;
-    readonly meterToPx = 60;
-    static readonly pxToMeter = 1 / 60;
-    static readonly meterToPx = 60;
+    readonly pxToMeter = 1 / 50;
+    readonly meterToPx = 50;
+    static readonly pxToMeter = 1 / 50;
+    static readonly meterToPx = 50;
 
 }

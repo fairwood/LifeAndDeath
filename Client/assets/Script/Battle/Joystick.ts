@@ -81,7 +81,6 @@ export class Joystick extends cc.Component {
         this.displacement = cc.Vec2.ZERO;
         let keyboardDisplacement = new cc.Vec2(0, 0);
         if (this.wasdPressDict[cc.KEY.w]) {
-            console.log('w');
             keyboardDisplacement.addSelf(new cc.Vec2(0, 1));
         }
         if (this.wasdPressDict[cc.KEY.a]) {
@@ -94,10 +93,8 @@ export class Joystick extends cc.Component {
             keyboardDisplacement.addSelf(new cc.Vec2(1, 0));
         }
         this.displacement = keyboardDisplacement.clone();
-        console.log('keyboardDisplacement', keyboardDisplacement)
         if (this.touchDisplacement) this.displacement.addSelf(this.touchDisplacement);
         if (this.displacement.mag() <= 0) this.displacement = null;
-        console.log('disp', this.displacement)
     }
 
     onInputDown(event: cc.Event.EventTouch): void {

@@ -578,8 +578,8 @@
     },
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 0.64,
-    "_scaleY": 0.64,
+    "_scaleX": 0.56,
+    "_scaleY": 0.56,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 147,

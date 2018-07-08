@@ -138,19 +138,19 @@ export default class HomeUI extends BaseUI {
         */
 
         DataMgr.enemysData = {};
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 20; i++) {
             let ch = new EnemyData();
             ch.nickname = DataMgr.APHash1('nickname' + i).toString();
             ch.address = DataMgr.APHash1('addr' + i).toString();
             ch.nonce = Math.floor(Math.random() * 1e7);
-            ch.index = 5 + 2 * i;
+            ch.index = 2 + 2 * i;
             ch.bounty = Math.random() * 2;
             // ch.lastWord = DataMgr.APHash1('lastWord' + i).toString();
-            ch.HPPt = 1 + Math.floor(Math.random() * (2+i/3));
-            ch.ADPt = 1 + Math.floor(Math.random() * (2+i/3));
-            ch.FRPt = 1 + Math.floor(Math.random() * (2+i/3));
-            ch.RGPt = 1 + Math.floor(Math.random() * (2+i/3));
-            ch.DGPt = 1 + Math.floor(Math.random() * (2+i/3));
+            ch.HPPt = 2 + Math.floor(Math.random() * (2+i/3));
+            ch.ADPt = 3 + Math.floor(Math.random() * (2+i/3));
+            ch.FRPt = 4 + Math.floor(Math.random() * (2+i/3));
+            ch.RGPt = 2 + Math.floor(Math.random() * (2+i/3));
+            ch.DGPt = 2 + Math.floor(Math.random() * (2+i/3));
             DataMgr.enemysData[ch.address] = ch;
         }
     }
