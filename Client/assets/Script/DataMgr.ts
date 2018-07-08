@@ -70,7 +70,7 @@ export class DataMgr {
         let a = (this.APHash1(index.toFixed() + 'theta'));
         let b = (this.APHash1(index.toFixed() + 'rho'));
         let theta = a * Math.PI * 2;
-        let l = (1 - b * b) * (5 + Math.pow(index, 0.5));
+        let l = (1 - b * b) * (10 + Math.pow(index, 0.5));
         let x = Math.cos(theta) * l;
         let y = Math.sin(theta) * l;
         return new cc.Vec2(x, y);
