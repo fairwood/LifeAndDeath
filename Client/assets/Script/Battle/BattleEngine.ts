@@ -113,8 +113,8 @@ export class BattleEngine extends cc.Component {
 
     onEnemyDie(enemyData) {
         this.leftEnemyCnt -= 1;
-        let enemyLv = enemyData.HPPt + enemyData.ADPt + enemyData.FRPt + enemyData.RGPt + enemyData.DGPt - DataMgr.freePt;
-        let gainExp = Math.round(enemyLv * 100 * (0.1 + 0.1 * Math.random()));
+        let enemyLv = enemyData.HPPt + enemyData.ADPt + enemyData.FRPt + enemyData.RGPt + enemyData.DGPt;
+        let gainExp = Math.abs(Math.round(enemyLv * 100 * (0.1 + 0.1 * Math.random())));
         this.exp += gainExp;
         let newPt = Math.floor(this.exp / 100);
         this.exp -= newPt * 100;
