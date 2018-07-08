@@ -69,8 +69,8 @@ export class BattleEngine extends cc.Component {
         let mostLeftDown = 0;
         //创建敌人
         this.leftEnemyCnt = 0;
-        for (let address in DataMgr.enemysData) {
-            let enemyData = DataMgr.enemysData[address];
+        for (let index in DataMgr.enemysData) {
+            let enemyData = DataMgr.enemysData[index];
             let chNode = cc.instantiate(this.characterTemplate);
             chNode.parent = this.characterContainer;
             let enemy = chNode.getComponent(Character);

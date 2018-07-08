@@ -1,6 +1,4 @@
 import BlockchainMgr from "../BlockchainMgr";
-import Island from "../World/Island";
-import CurrencyFormatter from "../Utils/CurrencyFormatter";
 import { DataMgr } from "../DataMgr";
 import DialogPanel from "../DialogPanel";
 
@@ -36,14 +34,14 @@ export default class RechargePanel extends cc.Component {
         let value = parseInt(this.edtValue.string);
         if (value > DataMgr.totalReward * 10 && value > 0.1) {
             DialogPanel.PopupWith2Buttons('', '充值金额超过了宝藏总额的10倍，充值很有可能失败。\n如果失败，货币回退回您的钱包。',
-                '强行充值', this.recharge, '取消', null);
+                '强行充值', () => { this.recharge(value); }, '取消', null);
         }
         else {
-            this.recharge();
+            this.recharge(value);
         }
     }
-    recharge() {
-
+    recharge(value: number) {
+        BlockchainMgr.Instance.callFunction('recharge', null, value, null);
     }
 
     close() {

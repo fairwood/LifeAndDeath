@@ -138,7 +138,7 @@ export default class HomeUI extends BaseUI {
 
         DataMgr.enemysData = {};
         for (let i = 0; i < 7; i++) {
-            let ch = {};
+            let ch = new EnemyData();
             ch.nickname = DataMgr.APHash1('nickname' + i).toString();
             ch.address = DataMgr.APHash1('addr' + i).toString();
             ch.nonce = Math.floor(Math.random() * 1e7);

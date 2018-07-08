@@ -1,13 +1,6 @@
-import { DataMgr, UserData, IslandData } from "./DataMgr";
 import DialogPanel from "./DialogPanel";
-import WorldUI from "./WorldUI";
-import ToastPanel from "./UI/ToastPanel";
-import ArkInWorld from "./World/ArkInWorld";
-import ArkUI from "./ArkUI";
-import CvsMain from "./CvsMain";
-import HomeUI from "./HomeUI";
-import AttackIslandPanel from "./UI/AttackIslandPanel";
 import MainCtrl from "./MainCtrl";
+import { DataMgr } from "./DataMgr";
 
 const { ccclass, property } = cc._decorator;
 
@@ -15,7 +8,7 @@ declare var Neb: any;
 declare var NebPay: any;
 declare var Account: any;
 declare var HttpRequest: any;
-export const ContractAddress = '';//'n1wJnaszNyRzV8EFmA7UMnkXSC4Cugb8Zp8'; //
+export const ContractAddress = 'n22G75ztMvYc82VkG2bDXkqhY8ZhvVbqPKf';//'n1wJnaszNyRzV8EFmA7UMnkXSC4Cugb8Zp8'; //
 export const EncKey = 37234;
 
 @ccclass
@@ -25,8 +18,8 @@ export default class BlockchainMgr extends cc.Component {
         BlockchainMgr.Instance = this;
     }
 
-    static BlockchainUrl: string = 'https://mainnet.nebulas.io';
-    // static BlockchainUrl: string = 'https://testnet.nebulas.io';
+    // static BlockchainUrl: string = 'https://mainnet.nebulas.io';
+    static BlockchainUrl: string = 'https://testnet.nebulas.io';
     static WalletAddress: string;
 
     static CheckWalletInterval = 10;
@@ -44,7 +37,7 @@ export default class BlockchainMgr extends cc.Component {
     }
 
     //不断刷新当前钱包地址
-    update1(dt: number) {
+    update(dt: number) {
         try {
             Neb; NebPay;
         } catch (error) {
@@ -91,7 +84,7 @@ export default class BlockchainMgr extends cc.Component {
             }
             let self = this;
             neb.api.call(from, ContractAddress, value, nonce, gas_price, gas_limit, contract).then(
-                self.onGetMyData
+                MainCtrl.Instance.onGetMyData
             ).catch(function (err) {
                 console.log("call mydata error:" + err.message, from);
             })
@@ -116,7 +109,7 @@ export default class BlockchainMgr extends cc.Component {
             }
             let self = this;
             neb.api.call(from, ContractAddress, value, nonce, gas_price, gas_limit, contract).then(
-                self.onGetAllMapData
+                MainCtrl.Instance.onGetMapData
             ).catch(function (err) {
                 console.log("call get_map_info error:" + err.message)
             })
@@ -161,19 +154,16 @@ export default class BlockchainMgr extends cc.Component {
         }
     }
 
-    onGetAllMapData(resp) {
-        console.log('onGetAllMapData', resp);
-        let allData = JSON.parse(resp.result).result_data;
-        let allUserData = allData.users;
-
-        DataMgr.enemysData = {};
-        allUserData.forEach(character => {
-            DataMgr.enemysData[character.address] = character;
-        });
-    }
-
     callFunction(callFunction, callArgs, value, callback) {
         try {
+            if (!window['webExtensionWallet']) {
+                DialogPanel.PopupWith2Buttons('正在调用钱包',
+                    '如果没有跳转到钱包，说明您没有安装区块链钱包或钱包插件，可点击按钮前去安装。',
+                    '安装', () => {
+                        window.open("https://github.com/ChengOrangeJu/WebExtensionWallet");
+                    },
+                    '确定', null);
+            }
             value = Math.ceil(value * 1e10) / 1e10;
             console.log("调用钱包(", callFunction, callArgs, value);
             var nebPay = new NebPay();

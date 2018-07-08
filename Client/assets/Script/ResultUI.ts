@@ -5,6 +5,7 @@ import { DataMgr } from "./DataMgr";
 import HomeUI from "./HomeUI";
 import { PropertyLine } from "./UI/PropertyLine";
 import { CharacterActor } from "./CharacterActor";
+import BlockchainMgr from "./BlockchainMgr";
 
 const { ccclass, property } = cc._decorator;
 
@@ -74,7 +75,7 @@ export default class ResultUI extends BaseUI {
     }
 
     onUploadClick() {
-
+        BlockchainMgr.Instance.callFunction('uploadResult', null, 0, null);
     }
     onBackClick() {
         CvsMain.EnterUI(HomeUI);

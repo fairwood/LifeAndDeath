@@ -48,6 +48,8 @@ export default class BattleUI extends BaseUI {
     prgExp: cc.ProgressBar = null;
     @property(cc.Label)
     lblExp: cc.Label = null;
+    @property(cc.Label)
+    lblBounty: cc.Label = null;
 
     @property(cc.Label)
     lblHP: cc.Label = null;
@@ -67,6 +69,7 @@ export default class BattleUI extends BaseUI {
     }
 
     update() {
+        let engine = MainCtrl.Instance.engine;
         this.grpUpgrade.active = MainCtrl.Instance.engine.pt >= 1;
         this.prgExp.progress = MainCtrl.Instance.engine.exp / 100;
         this.lblExp.string = MainCtrl.Instance.engine.exp.toFixed() + '/ 100';
@@ -77,6 +80,8 @@ export default class BattleUI extends BaseUI {
         this.lblFR.string = `${mainCharacter.FR.toPrecision(2)}/s 射速`;
         this.lblRG.string = `${mainCharacter.RG.toPrecision(2)}m 射程`;
         this.lblDG.string = `${mainCharacter.DG.toPrecision(2)}% 闪避`;
+
+        this.lblBounty.string = engine.bounty + 'NAS';
     }
 
     onAttackDown() {

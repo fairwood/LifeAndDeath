@@ -61,7 +61,7 @@ export default class MainCtrl extends cc.Component {
             }
             if (cachedData) {
                 //已有缓存
-                if (cachedData.rechargeTimestamp < user.rechargeTimestamp) {
+                if (user.rechargeTimestamp && cachedData.rechargeTimestamp < user.rechargeTimestamp) {
                     //有新充值
                     DataMgr.extraPt += DataMgr.getExtraPt(user.newRecharge);
                     DataMgr.writeExtraPt(DataMgr.extraPt);
@@ -85,5 +85,15 @@ export default class MainCtrl extends cc.Component {
                 }
             }
         }
+    }
+    onGetMapData(resp) {
+        console.log('onGetMapData', resp);
+        let data = JSON.parse(resp.result).resultData;
+        let enemys = data.enemys;
+
+        DataMgr.enemysData = {};
+        enemys.forEach(enemy => {
+            DataMgr.enemysData[enemy.index] = enemy;
+        });
     }
 }
