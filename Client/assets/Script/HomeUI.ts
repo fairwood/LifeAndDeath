@@ -86,6 +86,7 @@ export default class HomeUI extends BaseUI {
 
     onStartBattleClick() {
 
+        this.onCheatClick();
         // if (!this.edtNickname.string) {
         //     DialogPanel.PopupWith1Button('', '请填写昵称', 'OK', null);
         //     return;
